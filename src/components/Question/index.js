@@ -20,22 +20,23 @@ export default class Question extends Component {
 
     valider(){
         const {checks} = this;
+        if (checks.length === 0) return;
         const {answers} = this.props;
-        // console.log('valider', answers);
+        console.log('valider', answers);
+        console.log('valider', checks);
+
         const valid = {};
         answers.forEach( answer => {
             const {text} = answer;
-            valid[text] = answer.is_correct === checks[text].checked 
+            valid[text] = answer.is_correct !== checks[text].checked;
+           
         })
-        
         this.setState({valid});
 
     }
     check(checks) {
-        // this.setState({checks})
         this.checks = checks;
         console.log('checks', checks);
-        
     }
     render() {
         console.log('props', this.props);
@@ -53,7 +54,7 @@ export default class Question extends Component {
                 {image && <img src={image} />}
                 { choice 
                     ? <ChoixCheck valider={this.check} valid={valid}  answers={answers}/> 
-                    : <ChoixRadio valider={this.check} answers={answers}/>
+                    : <ChoixRadio valider={this.check} valid={valid}  answers={answers}/>
                 }
                 <Button type="primary" disabled={disabled} onClick={this.valider}>VALIDER</Button>
 

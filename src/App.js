@@ -30,7 +30,7 @@ class App extends Component {
       />
     )
     const question = (
-      <Question {...{...quiz.questions[this.state.current], default_params: quiz.default_params}}/>
+      <Question {...{...quiz.questions[this.state.current], default_params:quiz.default_params}}/>
     )
 
 
