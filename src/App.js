@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import './App.css';
+// import './App.css';
 
 import quiz from "./exo_quiz_react.json";
 
@@ -18,11 +18,10 @@ class App extends Component {
   }
   state = {
     current: 0,
-    uiid: '', 
     validate: false
   }
   
-  current(c){
+  current(c) {
     this.setState({
       current: c,
       validate: false

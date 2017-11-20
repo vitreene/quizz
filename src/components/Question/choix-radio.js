@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import CheckBoxOutlineBlank from 'material-ui/svg-icons/toggle/check-box-outline-blank';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
@@ -13,6 +15,24 @@ export default class ChoixRadio extends Component {
         option: ''
     }
 
+    componentWillMount() {
+        this.props.answers.forEach( answer => {
+            this.setState ({
+                [answer.text]: {checked: false}
+            })  
+        })
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.uuid !== this.props.uuid) {   
+            nextProps.answers.forEach( answer => {
+                this.setState ({
+                    [answer.text]: {checked: false}
+                })  
+            })  
+        }
+    }
+ 
     onChange(e, v) {
         this.setState({option: v})  
     }
@@ -51,3 +71,9 @@ export default class ChoixRadio extends Component {
         )
     }
 };
+
+ChoixRadio.propTypes = {
+    uuid: PropTypes.string,
+    answers: PropTypes.array,
+    validate: PropTypes.bool,
+  };

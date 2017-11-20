@@ -1,73 +1,73 @@
 import React , {Component} from 'react';
+import PropTypes from 'prop-types';
 
-// import {Nav, NavItem, NavLink, Button} from 'reactstrap';
-import { Button } from 'antd';
-// import {Menu} from 'antd';
-
-
-
-
+import RaisedButton from 'material-ui/RaisedButton';
+import {GridList} from 'material-ui/GridList';
 
 export default class Navigation extends Component {
     constructor(props) {
         super(props);
-        // this.nav = this.nav.bind(this)
         this.prec = this.prec.bind(this)
         this.next = this.next.bind(this)
     }
 
     state = {
         index: 0,
-        prec: null,
-        current: null,
+        prec: false,
         next: 1,
     }
-
-    componentDidMount(){
-        const len = this.props.qte;
-        this.setState({len: len - 1})
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        const {index} = this.state;
-        if( prevState.index !== index) this.props.current(index);
-    }
+    
     prec() {
         const {index} = this.state;
-        const prec =  (index >= 0);
-        const nextIndex = prec ? index - 1 : 0;
+        const prec = (index > 1);
+        const nextIndex = (prec) ? index - 1 : 0;
         this.setState({
             index: nextIndex,
             prec,
             next: true
         });
+        this.props.current(nextIndex)
     }
     next() {
-        const {index, len} = this.state;
-        const next = (index < len);
-        const nextIndex =  (next) ? index + 1 : len;
+        const {index} = this.state;
+        const next = (index < this.len - 1);
+        const nextIndex = (next) ? index + 1 : this.len;
         this.setState({
             index: nextIndex,
             next,
             prec: true
         });
+        this.props.current(nextIndex)
     }
 
+    get len() {
+        return this.props.qte - 1;
+    }
 
     render() {
         const {prec, next} = this.state;
         return (
-           <div>
-                 <Button 
-                 disabled={!prec}
-                 onClick={this.prec}
-                 > PRECEDENT</Button>
-                <Button 
-                disabled={!next}
-                onClick={this.next}
-                 >SUIVANT</Button>
-            
-            </div>
+             <GridList cols={2} padding={20} cellHeight={50}>
+                 <RaisedButton 
+                    label='Precedent' 
+                    disabled={!prec}
+                    default={true}
+                    fullWidth={true}
+                    onClick={this.prec}
+                />
+                 <RaisedButton 
+                    label='suivant' 
+                    disabled={!next}
+                    default={true}
+                    fullWidth={true}
+                    onClick={this.next}
+                />
+             </GridList>   
         )
     }
 };
+
+Navigation.propTypes = {
+    current: PropTypes.func,
+    qte: PropTypes.number,
+  };

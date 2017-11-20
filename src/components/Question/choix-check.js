@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Checkbox from 'material-ui/Checkbox';
 
 export default class ChoixCheck extends Component {
@@ -10,7 +11,6 @@ export default class ChoixCheck extends Component {
     state = {}
 
     componentWillMount() {
-        console.log('componentWillMount',  this.props.uuid);
         this.props.answers.forEach( answer => {
             this.setState ({
                 [answer.text]: {checked: false}
@@ -19,10 +19,8 @@ export default class ChoixCheck extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps', nextProps.uuid, this.props.uuid);
-        
         if (nextProps.uuid !== this.props.uuid) {   
-            this.props.answers.forEach( answer => {
+            nextProps.answers.forEach( answer => {
                 this.setState ({
                     [answer.text]: {checked: false}
                 })  
@@ -67,3 +65,9 @@ export default class ChoixCheck extends Component {
         )
     }
 };
+
+ChoixCheck.propTypes = {
+    uuid: PropTypes.string,
+    answers: PropTypes.array,
+    validate: PropTypes.bool,
+  };
