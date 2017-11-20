@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import { Checkbox } from 'antd';
+import Checkbox from 'material-ui/Checkbox';
 
 export default class ChoixCheck extends Component {
     constructor(props){
         super(props)
         this.onChange =  this.onChange.bind(this)
     }
-
 
     state = {}
 
@@ -16,16 +15,10 @@ export default class ChoixCheck extends Component {
                 [answer.text]: {checked: false}
             })  
         })
-        
     }
 
     componentWillReceiveProps(nextProps) {
-        // ne permet pas de contenir l'erreur au changme,t de questionnaire :/
         if (nextProps.uuid !== this.props.uuid) {   
-            console.log(
-                nextProps.uuid
-            );
-            
             this.props.answers.forEach( answer => {
                 this.setState ({
                     [answer.text]: {checked: false}
@@ -35,40 +28,41 @@ export default class ChoixCheck extends Component {
     }
 
     componentDidUpdate() {
-        this.props.valider(this.state);
+        this.props.check(this.state);
     }
         
     onChange(e) {
-        console.log('change', e.target.value);
-        const val = e.target.value;
+        const val = e.target.id;
+        console.log('change', e.target.id);
+        console.log('this.state[val]', this.state[val], val);
+    
         this.setState({
             [val]: {checked: !this.state[val].checked}
-        })
-
-        
+        })        
     }
     
     get answers(){
         const answers =  this.props.answers.map( answer => {
             const {text} = answer;
-           
-            console.log('valid', this.props.valid );
-            const is_true = this.props.valid[text];
-            console.log('this.props.valid', this.props.valid);
-            console.log('is_true,', is_true, is_true && style );
+            const is_error = this.props.valider[text];
+            const hasValid = (Object.keys(this.props.valider).length > 0);
             
-            const style = this.props.valid ? {color: is_true ? 'red': 'inherit'} : {color: 'inherit'};
+            console.log('valid', hasValid, this.props.valid);
 
-            return (     
-            <Checkbox
-                key={text}
-                checked={this.state[text].checked}
-                onChange={this.onChange}
-                value={text}
-            >
-                <label style = {style} >{text}</label>
-            </Checkbox>
-                
+            const style = hasValid
+            ? {color: is_error ? 'red' : 'green'} 
+            : {color: 'inherit'};
+
+            const checked = this.state[text] && this.state[text].checked;
+            return ( 
+                <Checkbox  
+                    key={text}
+                    id={text}
+                    checked={checked}
+                    onCheck={this.onChange}
+                    label={text}
+                    labelStyle={style}
+                />  
                 )}
             );
         return answers;
@@ -82,19 +76,3 @@ export default class ChoixCheck extends Component {
         )
     }
 };
-
-/*
-            { 
-                this.props.answers.map( answer => (
-                    
-                    <Checkbox
-                        key={answer.text}
-                        checked={this.state.checked}
-                        onChange={this.onChange}
-                    >
-                  <label>{answer.text}</label>
-            </Checkbox>
-                
-                ))
-            }
-*/

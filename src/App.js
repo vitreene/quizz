@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './App.css';
+
 import quiz from "./exo_quiz_react.json";
 
 import Gabarit from './components/Layout';
@@ -35,13 +37,13 @@ class App extends Component {
 
 
     return (
-      <div className="App">
-        <Gabarit 
+      <MuiThemeProvider>
+        <Gabarit id="App"
         title={title} 
         navigation={navigation}
         question={question}
         />
-      </div>
+      </MuiThemeProvider>
     );
   }
 }

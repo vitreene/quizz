@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import { Radio } from 'antd';
-const RadioGroup = Radio.Group;
 
 export default class ChoixRadio extends Component {
     constructor(props){
@@ -24,16 +22,16 @@ export default class ChoixRadio extends Component {
     }
     
     componentDidUpdate() {
-        const valid = {};
+        const valider = {};
         this.props.answers.forEach( answer => (
-            valid[answer.text] = { checked: (this.state.option === answer.text)}
+            valider[answer.text] = { checked: (this.state.option === answer.text)}
             )
         );
-        console.log('valid radio', valid);
+        console.log('valid radio', valider);
         
-        this.props.valider(valid);
+        this.props.check(valider);
     }
-        
+
     onChange(e) {
         console.log('change', e.target.value);
         const val = e.target.value;
@@ -44,18 +42,20 @@ export default class ChoixRadio extends Component {
         
     }
     get answers(){
+        console.log('answers this.props', this.props);
+        
             const answers =  this.props.answers.map( answer => {
                 const {text} = answer;
-               
-                console.log('valid', this.props.valid );
-                const is_error = this.props.valid[text];
-                console.log('this.props.valid', this.props.valid);
-                console.log('is_true,', is_error, is_error && style );
+                const is_error = this.props.valider[text];
+                const hasValid = (Object.keys(this.props.valider).length > 0);
                 
-                const style = this.props.valid 
-                ? {color: is_error ? 'red' : 'green'} 
-                : {color: 'inherit'};
-    
+                const style = hasValid
+                    ? {color: is_error ? 'green' : 'red'} 
+                    : {color: 'inherit'};         
+                
+                console.log('this.props.valid', this.props.valider);
+                console.log('VALID,', hasValid, is_error, is_error && style );
+
             return (
                 <div key={text}>
                     <input type="radio" 

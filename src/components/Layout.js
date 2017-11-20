@@ -7,7 +7,7 @@ const Gabarit = (props) => {
 // console.log('props.children', props.children);
 
 return (
-    <Layout>
+    <Layout> 
     <Header>{props.title}</Header>
     <Content>{props.navigation}</Content>
     <Content>{props.question}</Content>

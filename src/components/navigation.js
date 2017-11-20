@@ -2,10 +2,8 @@ import React , {Component} from 'react';
 
 // import {Nav, NavItem, NavLink, Button} from 'reactstrap';
 import { Button } from 'antd';
-import {Menu, Pagination} from 'antd';
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
-const {Item} = Menu;
+import {Menu} from 'antd';
+
 
 
 
@@ -57,7 +55,7 @@ export default class Navigation extends Component {
 
 
     render() {
-        const {index,prec, next} = this.state;
+        const {prec, next} = this.state;
         return (
            <div>
                  <Button 

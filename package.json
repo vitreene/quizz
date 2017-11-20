@@ -5,6 +5,7 @@
   "dependencies": {
     "antd": "^2.13.10",
     "bootstrap": "^4.0.0-beta",
+    "material-ui": "^0.19.4",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-scripts": "1.0.17",
