@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Layout } from 'antd';
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Content } = Layout;
 
 const Gabarit = (props) => {
 // console.log('props.children', props.children);
@@ -9,9 +9,8 @@ const Gabarit = (props) => {
 return (
     <Layout>
     <Header>{props.title}</Header>
-    <Header>{props.navigation}</Header>
-    <Content>Content</Content>
-    <Footer>Footer</Footer>
+    <Content>{props.navigation}</Content>
+    <Content>{props.question}</Content>
   </Layout>
 )
 
