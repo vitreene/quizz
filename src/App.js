@@ -8,17 +8,41 @@ import Gabarit from './components/Layout';
 import Titre from "./components/titre";
 import Navigation from "./components/navigation";
 import Question from "./components/Question";
+import Valider from './components/Valider';
 
 class App extends Component {
   constructor(props){
     super(props)
     this.current = this.current.bind(this)
+    this.valider = this.valider.bind(this)
   }
-  state= {
-    current: 0
+  state = {
+    current: 0,
+    uiid: '', 
+    validate: false
   }
+  
   current(c){
-    this.setState({current: c})
+    this.setState({
+      current: c,
+      validate: false
+    })
+  }
+
+  valider(){
+    if (this.display_correction) this.setState({validate: true})
+  }
+
+  get question() {
+    const question = quiz.questions[this.state.current];
+    return {
+      ...question, 
+      params: {...quiz.default_params, ...question.params},
+    }
+  }
+
+  get display_correction() {
+    return this.question.params.display_correction
   }
 
   render() {
@@ -32,9 +56,14 @@ class App extends Component {
       />
     )
     const question = (
-      <Question {...{...quiz.questions[this.state.current], default_params:quiz.default_params}}/>
+      <Question {...this.question} validate={this.state.validate}/>
     )
-
+    const valider = (
+      <Valider 
+        valider={this.valider} 
+        display_correction={this.display_correction}
+      />
+    )
 
     return (
       <MuiThemeProvider>
@@ -42,6 +71,7 @@ class App extends Component {
         title={title} 
         navigation={navigation}
         question={question}
+        valider={valider}
         />
       </MuiThemeProvider>
     );

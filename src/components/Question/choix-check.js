@@ -10,6 +10,7 @@ export default class ChoixCheck extends Component {
     state = {}
 
     componentWillMount() {
+        console.log('componentWillMount',  this.props.uuid);
         this.props.answers.forEach( answer => {
             this.setState ({
                 [answer.text]: {checked: false}
@@ -18,6 +19,8 @@ export default class ChoixCheck extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log('componentWillReceiveProps', nextProps.uuid, this.props.uuid);
+        
         if (nextProps.uuid !== this.props.uuid) {   
             this.props.answers.forEach( answer => {
                 this.setState ({
@@ -26,33 +29,21 @@ export default class ChoixCheck extends Component {
             })  
         }
     }
-
-    componentDidUpdate() {
-        this.props.check(this.state);
-    }
-        
+ 
     onChange(e) {
         const val = e.target.id;
-        console.log('change', e.target.id);
-        console.log('this.state[val]', this.state[val], val);
-    
         this.setState({
             [val]: {checked: !this.state[val].checked}
         })        
     }
     
     get answers(){
+        const {validate} = this.props;
         const answers =  this.props.answers.map( answer => {
-            const {text} = answer;
-            const is_error = this.props.valider[text];
-            const hasValid = (Object.keys(this.props.valider).length > 0);
-            
-            console.log('valid', hasValid, this.props.valid);
-
-            const style = hasValid
-            ? {color: is_error ? 'red' : 'green'} 
-            : {color: 'inherit'};
-
+            const {text, is_correct} = answer;
+            const style = validate
+                ? {color: is_correct ? 'green' : 'red'} 
+                : {color: 'inherit'};         
             const checked = this.state[text] && this.state[text].checked;
             return ( 
                 <Checkbox  

@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import CheckBoxOutlineBlank from 'material-ui/svg-icons/toggle/check-box-outline-blank';
+import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 
 export default class ChoixRadio extends Component {
     constructor(props){
@@ -10,76 +13,40 @@ export default class ChoixRadio extends Component {
         option: ''
     }
 
-    componentWillMount() {
-        /*
-        this.props.answers.forEach( answer => {
-            this.setState ({
-                [answer.text]: {checked: false}
-            })  
+    onChange(e, v) {
+        this.setState({option: v})  
+    }
+
+    get answers() {
+        const {validate} = this.props;
+        const answers =  this.props.answers.map( answer => {
+            const {text, is_correct} = answer;
+            const style = validate
+            ? {color: is_correct ? 'green' : 'red'} 
+            : {color: 'inherit'};         
+
+            return(
+                <RadioButton
+                    key={text}
+                    checked={this.state.option === text}
+                    checkedIcon={<CheckBox/>}
+                    uncheckedIcon={<CheckBoxOutlineBlank/>}
+                    value={text}
+                    label={text}
+                    labelStyle={style}
+                />
+            );
         })
-        */
-        
-    }
-    
-    componentDidUpdate() {
-        const valider = {};
-        this.props.answers.forEach( answer => (
-            valider[answer.text] = { checked: (this.state.option === answer.text)}
-            )
-        );
-        console.log('valid radio', valider);
-        
-        this.props.check(valider);
-    }
-
-    onChange(e) {
-        console.log('change', e.target.value);
-        const val = e.target.value;
-        this.setState({
-            option: val
-            // [val]: {checked: !this.state[val].checked}
-        })
-        
-    }
-    get answers(){
-        console.log('answers this.props', this.props);
-        
-            const answers =  this.props.answers.map( answer => {
-                const {text} = answer;
-                const is_error = this.props.valider[text];
-                const hasValid = (Object.keys(this.props.valider).length > 0);
-                
-                const style = hasValid
-                    ? {color: is_error ? 'green' : 'red'} 
-                    : {color: 'inherit'};         
-                
-                console.log('this.props.valid', this.props.valider);
-                console.log('VALID,', hasValid, is_error, is_error && style );
-
-            return (
-                <div key={text}>
-                    <input type="radio" 
-                        id={text}
-                        checked={this.state.option === text}
-                        onChange={this.onChange}
-                        value={text}
-                        name="question"
-                    />
-                    <label htmlFor={text} style = {style} >{text}</label>
-                </div>
-                )}
-            )
-           
-
         return answers;
     }
-    render(){
+
+    render() {
         return(
-            <div>
-               <form> 
-                {this.answers}
-                </form>
-            </div>
+            <RadioButtonGroup
+                onChange={this.onChange}
+                name="question">
+            {this.answers}
+            </RadioButtonGroup>
             
         )
     }
