@@ -19,6 +19,10 @@ export default class ChoixRadio extends Component {
         
     }
     
+    componentDidUpdate() {
+        this.props.valider(this.state);
+    }
+        
     onChange(e) {
         console.log('change', e.target.value);
         const val = e.target.value;

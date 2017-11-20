@@ -20,7 +20,6 @@ export default class ChoixCheck extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
         // ne permet pas de contenir l'erreur au changme,t de questionnaire :/
         if (nextProps.uuid !== this.props.uuid) {   
             console.log(
@@ -34,6 +33,10 @@ export default class ChoixCheck extends Component {
             })  
         }
     }
+
+    componentDidUpdate() {
+        this.props.valider(this.state);
+    }
         
     onChange(e) {
         console.log('change', e.target.value);
@@ -41,12 +44,21 @@ export default class ChoixCheck extends Component {
         this.setState({
             [val]: {checked: !this.state[val].checked}
         })
+
         
     }
     
     get answers(){
         const answers =  this.props.answers.map( answer => {
             const {text} = answer;
+           
+            console.log('valid', this.props.valid );
+            const is_true = this.props.valid[text];
+            console.log('this.props.valid', this.props.valid);
+            console.log('is_true,', is_true, is_true && style );
+            
+            const style = this.props.valid ? {color: is_true ? 'red': 'inherit'} : {color: 'inherit'};
+
             return (     
             <Checkbox
                 key={text}
@@ -54,7 +66,7 @@ export default class ChoixCheck extends Component {
                 onChange={this.onChange}
                 value={text}
             >
-                <label>{text}</label>
+                <label style = {style} >{text}</label>
             </Checkbox>
                 
                 )}
